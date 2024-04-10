@@ -1,83 +1,3 @@
-# import streamlit as st
-# import pandas as pd
-# import mlflow
-
-# # Função para carregar os dados de produção e as previsões
-# def load_data_and_predictions():
-#     # Carregar os dados de produção
-#     data_prod = pd.read_parquet("data/dataset_kobe_prod.parquet")
-#     # Carregar as previsões
-#     predictions = pd.read_parquet("output/predictions.parquet")
-#     return data_prod, predictions
-
-# # Função para carregar as métricas do modelo
-# def load_model_metrics():
-#     with mlflow.start_run(run_id="f253d7ed10e549199300788109fea8a2") as run:
-#         # Utilize mlflow.log_metric para registrar as métricas, não mlflow.get_metric
-#         log_loss_prod = mlflow.log_metric("log_loss_prod")
-#         f1_score_prod = mlflow.log_metric("f1_score_prod")
-#     return log_loss_prod, f1_score_prod
-
-# # Função principal do dashboard
-# def main():
-#     # Título do dashboard
-#     st.title("Monitoramento do Modelo de Classificação de Kobe")
-
-#     # Carregar os dados e as previsões
-#     data_prod, predictions = load_data_and_predictions()
-
-#     # Carregar as métricas do modelo
-#     log_loss_prod, f1_score_prod = load_model_metrics()
-
-#     # Exibir os dados de produção
-#     st.subheader("Dados de Produção:")
-#     st.write(data_prod)
-
-#     # Exibir as previsões
-#     st.subheader("Previsões:")
-#     st.write(predictions)
-
-#     # Exibir as métricas do modelo
-#     st.subheader("Métricas do Modelo:")
-#     st.write(f"Log Loss: {log_loss_prod}")
-#     st.write(f"F1 Score: {f1_score_prod}")
-
-# if __name__ == "__main__":
-#     main()
-
-# import streamlit as st
-# import mlflow.pyfunc
-
-# mlflow.set_tracking_uri("http://localhost:5000")
-
-# # Carregar o modelo MLflow
-# model_uri = "mlflow-artifacts:/0/a4156b87f8f84ac6839cde1e44e78fd4/artifacts/final_model"
-# loaded_model = mlflow.pyfunc.load_model(model_uri)
-
-# # Função para fazer previsões com o modelo
-# def predict(input_data):
-#     return loaded_model.predict(input_data)
-
-# # Função principal do aplicativo Streamlit
-# def main():
-#     # Interface do usuário para entrada de dados
-#     st.title("Previsão com Modelo MLflow")
-#     input_data = st.text_input("Insira os dados de entrada separados por vírgula")
-
-#     if st.button("Prever"):
-#         # Converter entrada de texto em uma lista de valores
-#         input_data = list(map(float, input_data.split(',')))
-
-#         # Fazer previsões com o modelo
-#         prediction = predict([input_data])
-
-#         # Exibir resultado da previsão
-#         st.write("Resultado da Previsão:", prediction)
-
-# if __name__ == "__main__":
-#     main()
-
-
 import streamlit as st
 import mlflow.pyfunc
 import pandas as pd
@@ -87,7 +7,7 @@ import seaborn as sns
 mlflow.set_tracking_uri("http://localhost:5000")
 
 # Carregar o modelo MLflow
-model_uri = "mlflow-artifacts:/0/a4156b87f8f84ac6839cde1e44e78fd4/artifacts/final_model"
+model_uri = "mlflow-artifacts:/0/84103a8bab7c4132b091fac101c1508b/artifacts/final_model"
 loaded_model = mlflow.pyfunc.load_model(model_uri)
 
 # Função para fazer previsões com o modelo
