@@ -60,6 +60,15 @@ pip install -r requirements.txt
 
 ## Uso
 
+## MLflow
+Para visualizar os resultados do treinamento do modelo usando MLflow, você pode iniciar o servidor MLflow:
+
+```
+mlflow ui --backend-store-uri sqlite:///mlruns.db
+```
+Isso iniciará o servidor MLflow e permitirá que você visualize experimentos, métricas e artefatos do modelo treinado.
+
+
 1. Preparação de Dados
 Para preparar os dados, execute o script preparacao_dados.py:
 
@@ -80,7 +89,7 @@ Este script carregará os dados preparados, treinará o modelo e avaliará sua p
 Para fazer previsões usando o modelo treinado, execute o script aplicacao.py:
 
 ```
-python aplicacao.py
+python scripts/aplicacao.py
 ```
 Este script carregará o modelo treinado e fará previsões sobre novos dados.
 
@@ -91,14 +100,6 @@ Para visualizar os resultados, você pode executar o dashboard usando o Streamli
 streamlit run scripts/dashboard.py
 ```
 Isso abrirá uma interface web onde você poderá explorar os dados e visualizar as previsões feitas pelo modelo.
-
-## MLflow
-Para visualizar os resultados do treinamento do modelo usando MLflow, você pode iniciar o servidor MLflow:
-
-```
-mlflow ui --backend-store-uri sqlite:///mlruns.db
-```
-Isso iniciará o servidor MLflow e permitirá que você visualize experimentos, métricas e artefatos do modelo treinado.
 
 ## Contribuindo
 Contribuições são bem-vindas! Sinta-se à vontade para abrir um problema ou enviar uma solicitação de recebimento (pull request) para melhorias.

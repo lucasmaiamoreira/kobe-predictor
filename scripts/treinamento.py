@@ -5,11 +5,13 @@ from pycaret.classification import setup, create_model, predict_model
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
 
 mlflow.set_tracking_uri("http://localhost:5000")
 
+
 with mlflow.start_run(run_name="Treinamento"):
-    data_train = pd.read_parquet("data/processed/base_train.parquet")
+    data_train = pd.read_parquet("data/processed/data_filtered_dev.parquet")
 
     # Salvar os nomes das características
     feature_names = data_train.dropna(subset=['shot_made_flag']).columns.tolist()
@@ -18,7 +20,7 @@ with mlflow.start_run(run_name="Treinamento"):
 
     log_reg = create_model('lr')
 
-    data_test = pd.read_parquet("data/processed/base_test.parquet")
+    data_test = pd.read_parquet("data/processed/data_filtered_prod.parquet")
     y_test = data_test['shot_made_flag']
 
     # Garantir que o conjunto de dados de teste tenha as mesmas características que o conjunto de treinamento
@@ -104,7 +106,9 @@ with mlflow.start_run(run_name="Treinamento"):
     else:
         final_model = dt
         model_type = "Árvore de Decisão"
+    try:
+        mlflow.sklearn.save_model(final_model, "final_model")
+    except:
+        pass
     
-    mlflow.sklearn.save_model(final_model, "final_model")
-
     mlflow.sklearn.log_model(final_model, "Treinamento", registered_model_name="Treinamento")

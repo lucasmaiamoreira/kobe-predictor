@@ -49,6 +49,6 @@ with mlflow.start_run(run_name="PipelineAplicacao"):
 
     mlflow.sklearn.log_model(
         loaded_model, 
-        "final_model",
+        "koube-predictor",
         registered_model_name="koube-predictor"
     )
