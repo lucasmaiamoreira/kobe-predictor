@@ -60,7 +60,7 @@ pip install -r requirements.txt
 
 ## Uso
 
-## Para executar todo o processo desde o treinamento até o servidor do Streamlit:
+## Para executar todo o processo desde o servidor do Mlflow, treinamento até o servidor do Streamlit:
 
 Execute o seguinte comando no terminal, dentro do diretório do projeto:
 
