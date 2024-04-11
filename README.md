@@ -70,7 +70,9 @@ python main.py
 
 Este comando irá realizar todas as etapas necessárias, desde a preparação dos dados até a execução do servidor do Streamlit para visualização dos resultados.
 
-### Por favor, note que o código está configurado para rodar com Linux. Se estiver executando em um ambiente Windows, você precisará descomentar a linha relevante no código e comentar a linha para Linux no arquivo main.py na função start_mlflow_server.
+### Por favor, note que o código está configurado para rodar com Linux. 
+
+### Se estiver executando em um ambiente Windows, você precisará descomentar a linha relevante no código e comentar a linha para Linux no arquivo main.py na função start_mlflow_server.
 
 ## MLflow
 Para visualizar os resultados do treinamento do modelo usando MLflow, você pode iniciar o servidor MLflow:
