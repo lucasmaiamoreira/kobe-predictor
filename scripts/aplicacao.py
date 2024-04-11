@@ -8,6 +8,8 @@ mlflow.set_tracking_uri("http://localhost:5000")
 
 def aplicacao():
 
+    print("Pipeline Aplicacao")
+
     with mlflow.start_run(run_name="PipelineAplicacao"):
 
         loaded_model = mlflow.sklearn.load_model("final_model")

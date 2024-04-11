@@ -88,6 +88,8 @@ def realizar_sobreamostagem(X, y):
 
 
 def preparacao_dados():
+
+    print("Preparação Dados")
     
     with mlflow.start_run(run_name="PreparacaoDados"):
         data_dev = pd.read_parquet("data/raw/dataset_kobe_dev.parquet")

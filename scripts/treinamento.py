@@ -11,6 +11,8 @@ mlflow.set_tracking_uri("http://localhost:5000")
 
 def treinamento():
 
+    print("Treinamento")
+
     with mlflow.start_run(run_name="Treinamento"):
         data_train = pd.read_parquet("data/processed/data_filtered_dev.parquet")
 
