@@ -60,6 +60,18 @@ pip install -r requirements.txt
 
 ## Uso
 
+## Para executar todo o processo desde o treinamento até o servidor do Streamlit:
+
+Execute o seguinte comando no terminal, dentro do diretório do projeto:
+
+```
+python main.py
+```
+
+Este comando irá realizar todas as etapas necessárias, desde a preparação dos dados até a execução do servidor do Streamlit para visualização dos resultados.
+
+Por favor, note que o código está configurado para rodar com Linux. Se estiver executando em um ambiente Windows, você precisará descomentar a linha relevante no código e comentar a linha para Linux no arquivo main.py na função start_mlflow_server.
+
 ## MLflow
 Para visualizar os resultados do treinamento do modelo usando MLflow, você pode iniciar o servidor MLflow:
 
@@ -70,7 +82,6 @@ Isso iniciará o servidor MLflow e permitirá que você visualize experimentos, 
 
 
 1. Preparação de Dados
-Para preparar os dados, execute o script preparacao_dados.py:
 
 ```
 python scripts/preparacao_dados.py
@@ -78,7 +89,6 @@ python scripts/preparacao_dados.py
 Este script realizará a preparação dos dados, treinará um modelo de aprendizado de máquina e salvará os artefatos resultantes.
 
 2. Treinamento do Modelo
-Para treinar o modelo, execute o script treinamento.py:
 
 ```
 python scripts/treinamento.py
@@ -86,7 +96,6 @@ python scripts/treinamento.py
 Este script carregará os dados preparados, treinará o modelo e avaliará sua performance.
 
 3. Aplicação do Modelo
-Para fazer previsões usando o modelo treinado, execute o script aplicacao.py:
 
 ```
 python scripts/aplicacao.py
@@ -94,7 +103,6 @@ python scripts/aplicacao.py
 Este script carregará o modelo treinado e fará previsões sobre novos dados.
 
 ## Visualização de Dados
-Para visualizar os resultados, você pode executar o dashboard usando o Streamlit:
 
 ```
 streamlit run scripts/dashboard.py
