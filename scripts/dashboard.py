@@ -8,11 +8,12 @@ import os
 
 mlflow.set_tracking_uri("http://localhost:5000")
 
-model_uri = mlflow.get_artifact_uri("koube-predictor")
-print(model_uri)
+input_columns = ['lat', 'lon', 'minutes_remaining', 'period', 'playoffs', 'shot_distance']
+
+model_uri = os.getenv("MLFLOW_MODEL_URI")
+
 loaded_model = mlflow.pyfunc.load_model(model_uri)
 
-input_columns = ['lat', 'lon', 'minutes_remaining', 'period', 'playoffs', 'shot_distance']
 
 def predict(input_data):
     input_data = input_data[input_columns]

@@ -22,7 +22,7 @@
 1. Clone este repositório:
 
 ```
-git clone https://github.com/seu-usuario/kobe-bryant-shot-prediction.git
+git clone https://github.com/seu-usuario/kobe-predictor.git
 ```
 
 2. Navegue até o diretório do projeto:
@@ -106,4 +106,3 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir um problema ou e
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - consulte o arquivo LICENSE para obter mais detalhes.
-

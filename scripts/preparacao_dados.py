@@ -86,70 +86,73 @@ def realizar_sobreamostagem(X, y):
     X_over, y_over = over_sampler.fit_resample(X, y)
     return X_over, y_over
 
-with mlflow.start_run(run_name="PreparacaoDados"):
-    data_dev = pd.read_parquet("data/raw/dataset_kobe_dev.parquet")
-    data_prod = pd.read_parquet("data/raw/dataset_kobe_prod.parquet")
 
-    relevant_columns = ['lat', 'lon', 'minutes_remaining', 'period', 'playoffs', 'shot_distance', 'shot_made_flag']
-    data_dev_filtered = data_dev[relevant_columns].dropna()
-    data_prod_filtered = data_prod[relevant_columns].dropna()
-    print(data_prod_filtered)
-
-    data_dev_filtered.to_parquet("data/processed/data_filtered_dev.parquet")
-    data_prod_filtered.to_parquet("data/processed/data_filtered_prod.parquet")
-
-    X = data_dev_filtered.drop(columns=['shot_made_flag'])
-    y = data_dev_filtered['shot_made_flag']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
-
-    print("Balanceamento antes da subamostragem:")
-    print(y_train.value_counts())
-
-    X_under, y_under = realizar_subamostragem(X_train, y_train)
-
-    print("Balanceamento após a subamostragem:")
-    print(pd.Series(y_under).value_counts())
-
-    X_over, y_over = realizar_sobreamostagem(X_train, y_train)
-
-    print("Balanceamento após a sobreamostragem:")
-    print(pd.Series(y_over).value_counts())
-
-    mlflow.log_param("balanceamento_antes_subamostragem", y_train.value_counts().to_dict())
-    mlflow.log_param("balanceamento_apos_subamostragem", pd.Series(y_under).value_counts().to_dict())
-    mlflow.log_param("balanceamento_apos_sobreamostagem", pd.Series(y_over).value_counts().to_dict())
-
-    sk_model = RandomForestClassifier()
-    sk_model.fit(X_over, y_over)
-
-    mlflow.sklearn.log_model(
-        sk_model, 
-        "PreparacaoDados",
-        registered_model_name="PreparacaoDados")
+def preparacao_dados():
     
-    y_pred = sk_model.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
-    roc_auc = roc_auc_score(y_test, y_pred)
+    with mlflow.start_run(run_name="PreparacaoDados"):
+        data_dev = pd.read_parquet("data/raw/dataset_kobe_dev.parquet")
+        data_prod = pd.read_parquet("data/raw/dataset_kobe_prod.parquet")
 
-    mlflow.log_metric("accuracy", accuracy)
-    mlflow.log_metric("precision", precision)
-    mlflow.log_metric("recall", recall)
-    mlflow.log_metric("f1_score", f1)
-    mlflow.log_metric("roc_auc_score", roc_auc)
+        relevant_columns = ['lat', 'lon', 'minutes_remaining', 'period', 'playoffs', 'shot_distance', 'shot_made_flag']
+        data_dev_filtered = data_dev[relevant_columns].dropna()
+        data_prod_filtered = data_prod[relevant_columns].dropna()
+        print(data_prod_filtered)
 
-    percent_test = len(X_test) / (len(X_train) + len(X_test))
+        data_dev_filtered.to_parquet("data/processed/data_filtered_dev.parquet")
+        data_prod_filtered.to_parquet("data/processed/data_filtered_prod.parquet")
 
-    mlflow.log_param("percent_test", percent_test)
-    mlflow.log_metric("train_size", len(X_train))
-    mlflow.log_metric("test_size", len(X_test))
+        X = data_dev_filtered.drop(columns=['shot_made_flag'])
+        y = data_dev_filtered['shot_made_flag']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
 
-    plot_histograms_and_countplots(pd.concat([X_train, y_train], axis=1))
-    plot_histograms_and_countplots(pd.concat([X_test, y_test], axis=1))
+        print("Balanceamento antes da subamostragem:")
+        print(y_train.value_counts())
 
-    plot_parameter_validation_curve('n_estimators', {'n_estimators': [10, 50, 100, 200]}, sk_model, "RandomForestClassifier", "accuracy", logx=True, X_train=X_over, y_train=y_over)
-    plot_learning_curve(sk_model, "RandomForestClassifier", "accuracy", np.linspace(.1, 1.0, 10), X_over, y_over)
+        X_under, y_under = realizar_subamostragem(X_train, y_train)
 
-    mlflow.log_artifacts(artifacts_dir)
+        print("Balanceamento após a subamostragem:")
+        print(pd.Series(y_under).value_counts())
+
+        X_over, y_over = realizar_sobreamostagem(X_train, y_train)
+
+        print("Balanceamento após a sobreamostragem:")
+        print(pd.Series(y_over).value_counts())
+
+        mlflow.log_param("balanceamento_antes_subamostragem", y_train.value_counts().to_dict())
+        mlflow.log_param("balanceamento_apos_subamostragem", pd.Series(y_under).value_counts().to_dict())
+        mlflow.log_param("balanceamento_apos_sobreamostagem", pd.Series(y_over).value_counts().to_dict())
+
+        sk_model = RandomForestClassifier()
+        sk_model.fit(X_over, y_over)
+
+        mlflow.sklearn.log_model(
+            sk_model, 
+            "PreparacaoDados",
+            registered_model_name="PreparacaoDados")
+        
+        y_pred = sk_model.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        precision = precision_score(y_test, y_pred)
+        recall = recall_score(y_test, y_pred)
+        f1 = f1_score(y_test, y_pred)
+        roc_auc = roc_auc_score(y_test, y_pred)
+
+        mlflow.log_metric("accuracy", accuracy)
+        mlflow.log_metric("precision", precision)
+        mlflow.log_metric("recall", recall)
+        mlflow.log_metric("f1_score", f1)
+        mlflow.log_metric("roc_auc_score", roc_auc)
+
+        percent_test = len(X_test) / (len(X_train) + len(X_test))
+
+        mlflow.log_param("percent_test", percent_test)
+        mlflow.log_metric("train_size", len(X_train))
+        mlflow.log_metric("test_size", len(X_test))
+
+        plot_histograms_and_countplots(pd.concat([X_train, y_train], axis=1))
+        plot_histograms_and_countplots(pd.concat([X_test, y_test], axis=1))
+
+        plot_parameter_validation_curve('n_estimators', {'n_estimators': [10, 50, 100, 200]}, sk_model, "RandomForestClassifier", "accuracy", logx=True, X_train=X_over, y_train=y_over)
+        plot_learning_curve(sk_model, "RandomForestClassifier", "accuracy", np.linspace(.1, 1.0, 10), X_over, y_over)
+
+        mlflow.log_artifacts(artifacts_dir)
