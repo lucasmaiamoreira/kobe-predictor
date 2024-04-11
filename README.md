@@ -83,36 +83,29 @@ mlflow ui --backend-store-uri sqlite:///mlruns.db
 Isso iniciará o servidor MLflow e permitirá que você visualize experimentos, métricas e artefatos do modelo treinado.
 
 
-1. Preparação de Dados
+1. Preparação de Dados - scripts/preparacao_dados.py:
 
-```
-python scripts/preparacao_dados.py
-```
 Este script realizará a preparação dos dados, treinará um modelo de aprendizado de máquina e salvará os artefatos resultantes.
 
-2. Treinamento do Modelo
 
-```
-python scripts/treinamento.py
-```
+2. Treinamento do Modelo - scripts/treinamento.py:
+
 Este script carregará os dados preparados, treinará o modelo e avaliará sua performance.
 
-3. Aplicação do Modelo
 
-```
-python scripts/aplicacao.py
-```
+3. Aplicação do Modelo - scripts/aplicacao.py:
+
 Este script carregará o modelo treinado e fará previsões sobre novos dados.
 
-## Visualização de Dados
 
-```
-streamlit run scripts/dashboard.py
-```
-Isso abrirá uma interface web onde você poderá explorar os dados e visualizar as previsões feitas pelo modelo.
+4. Visualização de Dados usando Streamlit - scripts/dashboard.py:
+
+Uma interface web onde você poderá explorar os dados e visualizar as previsões feitas pelo modelo.
+
 
 ## Contribuindo
 Contribuições são bem-vindas! Sinta-se à vontade para abrir um problema ou enviar uma solicitação de recebimento (pull request) para melhorias.
+
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - consulte o arquivo LICENSE para obter mais detalhes.
