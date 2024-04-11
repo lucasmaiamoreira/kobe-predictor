@@ -10,7 +10,7 @@ with mlflow.start_run(run_name="PipelineAplicacao"):
 
     loaded_model = mlflow.sklearn.load_model("final_model")
 
-    data_prod = pd.read_parquet("data/dataset_kobe_prod.parquet")
+    data_prod = pd.read_parquet("data/raw/dataset_kobe_prod.parquet")
 
     data_prod_cleaned = data_prod.dropna(subset=['shot_made_flag'])
 

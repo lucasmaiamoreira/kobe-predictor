@@ -1,6 +1,6 @@
 import mlflow
 import mlflow.sklearn
-from sklearn.metrics import log_loss, f1_score, roc_curve, auc, confusion_matrix
+from sklearn.metrics import log_loss, f1_score, roc_curve, auc, confusion_matrix, accuracy_score, precision_score, recall_score, roc_auc_score
 from pycaret.classification import setup, create_model, predict_model
 import pandas as pd
 import seaborn as sns
@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 mlflow.set_tracking_uri("http://localhost:5000")
 
 with mlflow.start_run(run_name="Treinamento"):
-
     data_train = pd.read_parquet("data/processed/base_train.parquet")
 
-    data_train = data_train.dropna(subset=['shot_made_flag'])
+    # Salvar os nomes das características
+    feature_names = data_train.dropna(subset=['shot_made_flag']).columns.tolist()
 
     clf = setup(data=data_train, target='shot_made_flag')
 
@@ -20,10 +20,26 @@ with mlflow.start_run(run_name="Treinamento"):
 
     data_test = pd.read_parquet("data/processed/base_test.parquet")
     y_test = data_test['shot_made_flag']
+
+    # Garantir que o conjunto de dados de teste tenha as mesmas características que o conjunto de treinamento
+    data_test = data_test[feature_names]
+
     y_pred_lr = predict_model(log_reg, data=data_test)['shot_made_flag']
     log_loss_lr = log_loss(y_test, y_pred_lr)
 
     mlflow.log_metric("log_loss_logistic_regression", log_loss_lr)
+
+    accuracy_lr = accuracy_score(y_test, y_pred_lr)
+    precision_lr = precision_score(y_test, y_pred_lr)
+    recall_lr = recall_score(y_test, y_pred_lr)
+    f1_lr = f1_score(y_test, y_pred_lr)
+    roc_auc_lr = roc_auc_score(y_test, y_pred_lr)
+
+    mlflow.log_metric("accuracy_lr", accuracy_lr)
+    mlflow.log_metric("precision_lr", precision_lr)
+    mlflow.log_metric("recall_lr", recall_lr)
+    mlflow.log_metric("f1_lr", f1_lr)
+    mlflow.log_metric("roc_auc_lr", roc_auc_lr)
 
     plt.figure()
     sns.heatmap(confusion_matrix(y_test, y_pred_lr), annot=True, fmt='d', cmap='Blues')

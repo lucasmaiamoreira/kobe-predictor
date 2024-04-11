@@ -87,14 +87,16 @@ def realizar_sobreamostagem(X, y):
     return X_over, y_over
 
 with mlflow.start_run(run_name="PreparacaoDados"):
-    data_dev = pd.read_parquet("data/dataset_kobe_dev.parquet")
-    data_prod = pd.read_parquet("data/dataset_kobe_prod.parquet")
+    data_dev = pd.read_parquet("data/raw/dataset_kobe_dev.parquet")
+    data_prod = pd.read_parquet("data/raw/dataset_kobe_prod.parquet")
 
     relevant_columns = ['lat', 'lon', 'minutes_remaining', 'period', 'playoffs', 'shot_distance', 'shot_made_flag']
     data_dev_filtered = data_dev[relevant_columns].dropna()
-    data_prod_filtered = data_prod[relevant_columns[:-1]].dropna()
+    data_prod_filtered = data_prod[relevant_columns].dropna()
+    print(data_prod_filtered)
 
-    data_dev_filtered.to_parquet("data/processed/data_filtered.parquet")
+    data_dev_filtered.to_parquet("data/processed/data_filtered_dev.parquet")
+    data_prod_filtered.to_parquet("data/processed/data_filtered_prod.parquet")
 
     X = data_dev_filtered.drop(columns=['shot_made_flag'])
     y = data_dev_filtered['shot_made_flag']
