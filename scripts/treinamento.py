@@ -6,6 +6,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
+from imblearn.under_sampling import RandomUnderSampler
+from imblearn.over_sampling import RandomOverSampler
 
 mlflow.set_tracking_uri("http://localhost:5000")
 
@@ -16,7 +18,6 @@ def treinamento():
     with mlflow.start_run(run_name="Treinamento"):
         data_train = pd.read_parquet("data/processed/data_filtered_dev.parquet")
 
-        # Salvar os nomes das características
         feature_names = data_train.dropna(subset=['shot_made_flag']).columns.tolist()
 
         clf = setup(data=data_train, target='shot_made_flag')
@@ -26,7 +27,6 @@ def treinamento():
         data_test = pd.read_parquet("data/processed/data_filtered_prod.parquet")
         y_test = data_test['shot_made_flag']
 
-        # Garantir que o conjunto de dados de teste tenha as mesmas características que o conjunto de treinamento
         data_test = data_test[feature_names]
 
         y_pred_lr = predict_model(log_reg, data=data_test)['shot_made_flag']
